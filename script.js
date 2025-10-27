@@ -24,7 +24,7 @@ document.getElementById("registrationForm").addEventListener("submit", async fun
     return;
   }
 
-  // Show loading state
+
   const submitBtn = document.querySelector('button[type="submit"]');
   const originalBtnText = submitBtn.textContent;
   submitBtn.disabled = true;
@@ -37,21 +37,16 @@ document.getElementById("registrationForm").addEventListener("submit", async fun
     formData.append("email", document.getElementById("email").value);
     formData.append("college", document.getElementById("college").value);
     
-    // Only append file if it exists
+
     const fileInput = document.getElementById("screenshot");
     if (fileInput.files.length > 0) {
       formData.append("file", fileInput.files[0]);
     }
 
-    // Solution 1: Use a different CORS proxy
-    const PROXY_URL = "https://corsproxy.io/?"; // Alternative proxy
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwbi0KHfzJFi0wuYfDGPJNL9MLKjseV-eSXZNfYRTK22HwCIrYSSQqpRpCkrHsLKet-gA/exec";
-    // const response = await fetch(PROXY_URL + encodeURIComponent(SCRIPT_URL), {
-    //   method: "POST",
-    //   body: formData,
-    //   redirect: "follow"
-    // });
 
+    const PROXY_URL = "https://corsproxy.io/?"; 
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwbi0KHfzJFi0wuYfDGPJNL9MLKjseV-eSXZNfYRTK22HwCIrYSSQqpRpCkrHsLKet-gA/exec";
+  
    
     const response = await fetch(SCRIPT_URL, {
       method: "POST",
@@ -59,7 +54,7 @@ document.getElementById("registrationForm").addEventListener("submit", async fun
       redirect: "follow"
     });
     
-    // Handle the response
+
     if (response.ok || response.redirected) {
       document.getElementById("message").innerHTML = `
         <div class="success-message">
@@ -69,7 +64,7 @@ document.getElementById("registrationForm").addEventListener("submit", async fun
       document.getElementById("registrationForm").reset();
       localStorage.setItem("formSubmitted", "true");
       
-      // Disable inputs
+  
       Array.from(document.querySelectorAll("input, button")).forEach(el => {
         el.disabled = true;
       });
@@ -84,13 +79,13 @@ document.getElementById("registrationForm").addEventListener("submit", async fun
       </div>
     `;
   } finally {
-    // Restore button state
+  
     submitBtn.disabled = false;
     submitBtn.textContent = originalBtnText;
   }
 });
 
-// Prevent resubmission
+
 window.onload = () => {
   if (localStorage.getItem("formSubmitted") === "true") {
     document.getElementById("message").innerHTML = `
@@ -102,4 +97,5 @@ window.onload = () => {
       el.disabled = true;
     });
   }
+
 };
